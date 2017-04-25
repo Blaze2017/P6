@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Titanic Data Exploration</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+      h2 {
+        color: black;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+<body class="container">
+  
+
+  <h1 style="text-align:center">Titanic Data Analysis</h1>
+	
+		 <div class="row">
+
+	 <div class="row">
+	  <br />
+	  <h2 style="text-align:left">survival rate vs class</h2>
+		<div id="chart1"></div>
+    From this chart, we can see that passengers in higher class had a better chance to survive. For example, 76% of the passengers in the first class survived, while only 37% of the people in the thrid class did. This is not hard to explain, as the crew on board allowed the 1st class passengers to get onto the limited number life boats, while forced the passengers in the lower classes to wait. Thus, the lower class passengers either died trapped or by missing the chance to get onto the life boats before Titanic sank.
+  </div>
+	
+	  
+		<div class="row">
+		<br />
+	  <h2 style="text-align:left">survival rate vs gender</h2>
+		<div id="chart2"></div>
+		This might be the most dramatic comparison of all charts, where we can notice that most men, 81%, died, while most women, 74% survived. This can be explained by the fact that gentlemen devoted their own lives to help women to get onto the life boats which were not enough for everybody. 
+	 </div>
+
+	<div class="row">
+		<br />
+	  <h2 style="text-align:left">survial rate vs age</h2>
+		<div id="chart3"></div>
+		This charts shows some interesting phenomenon that kids, in age [1-10] had the highest chance to survive, as the adults usually took care of the kids and put them to higher priority to get on the life boats. For the passengers in other age groups, we may notice that people in the age group [31-40] had the highest survival rate, probably contributed by two factors: 1) The were young and strong, and thus could help them better in surviving. 2) There were more people within such age group are from the 1st class. People who were older had less chance to survive because of their weaker body quality. 
+	</div>
+	
+		<div class="row">
+		<br />
+	  <h2 style="text-align:left">survival rate vs kis number</h2>
+		<div id="chart4"></div>
+		It seems that kids had two directions affecting the survival rate of passengers. If someone did not have any kid, his/her chance to survive was not pleasant, only 34%, and the chance would jump up to 55% when his/her had 1 kid, such general trends continued to 60% with 3 kids, but suddenly dropped to 0 with 4 kids. Such trend almost stayed there with 4+ kids. As we discussed previously, people put kids into higher priority, and so to the parent(s) of the kids to take care of them. However, everything has a degree -- in this case, parent(s) with too many kids 4+, would had a much more difficult time to escape from their rooms, passing the complex hall ways in the ship, and finally made it to the life boats, to enjoy the priority.
+	</div>
+
+	<script type="text/javascript">
+		// 1 - Survival rate v.s. class
+		//define a vector graphic area
+		var svg1 = dimple.newSvg("#chart1", 600, 500);
+		d3.csv("titanic-data (version 2).csv", function(Tdata){
+		    //define an empty chart
+		    var chart1 = new dimple.chart(svg1, Tdata);
+		    //define the x axis of this chart
+		    x = chart1.addCategoryAxis("x", ["Pclass"]);
+		    // define the sequence of x axis
+		    x.addOrderRule("Pclass");
+		    //define the y axis of this chart
+		    y = chart1.addPctAxis("y", "S_V");
+		    //Combine the survial and death on the same bar
+		    chart1.addSeries("Condition", dimple.plot.bar);
+		    //Define legend size and position
+			  chart1.addLegend(65, 15, 500, 20, "left");
+			  // Modify the x and y axes title to something easier for the reader to understand
+			  x.title = "Class the passengers were in";
+			  y.title = "Percentage of passenger survived or died";
+			  chart1.draw();
+		});
+
+			//2 -  Survival rate v.s. gender
+		var svg2 = dimple.newSvg("#chart2", 600, 500);
+		d3.csv("titanic-data (version 2).csv", function(Tdata){
+			  var chart2 = new dimple.chart(svg2, Tdata);
+			  //x.addOrderRule("")
+		    x = chart2.addCategoryAxis("x", ["Sex"]);
+		    y = chart2.addPctAxis("y", "S_V");
+		    chart2.addSeries("Condition", dimple.plot.bar);
+		  	chart2.addLegend(65, 15, 500, 20, "left");
+			  x.title = "Gender of the passengers";
+			  y.title = "Percentage of passenger survived or died";
+		  	chart2.draw();
+		});
+
+
+		// 3 - Survival rate v.s. gender and age
+
+		var svg3 = dimple.newSvg("#chart3", 900, 500);
+		d3.csv("titanic-data (version 2).csv", function(Tdata){
+			  var chart3 = new dimple.chart(svg3, Tdata);
+		    x = chart3.addCategoryAxis("x", ["Age_group"]);
+		    x.addOrderRule("Age_group");
+		    y = chart3.addPctAxis("y", "S_V");
+		    chart3.addSeries("Condition", dimple.plot.bar);
+		    chart3.addLegend(65, 15, 500, 20, "left");
+			  x.title = "Age of the passengers";
+			  y.title = "Percentage of passenger survived or died";
+			  chart3.draw();
+		});	
+		
+		
+		
+		// 4 - Survival rate v.s. number of kids a person has
+
+		var svg4 = dimple.newSvg("#chart4", 900, 500);
+		d3.csv("titanic-data (version 2).csv", function(data){
+			  var chart4 = new dimple.chart(svg4, data);
+		    x = chart4.addCategoryAxis("x", ["Parch"]);
+		    y = chart4.addPctAxis("y", "S_V");
+		    chart4.addSeries("Condition", dimple.plot.bar);
+		    chart4.addLegend(65, 15, 500, 20, "left");
+			  x.title = "Number of kids each passenger had";
+			  y.title = "Percentage of passenger survived or died";
+			  chart4.draw();
+		});	
+
+
+	</script>
+</body>
+</html>

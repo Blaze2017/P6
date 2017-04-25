@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Titanic Data Exploration</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+      h2 {
+        color: black;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+<body class="container">
+	Titanic Data Analysis and Interative Visualization
+
+	<div class="row">
+		<div id="chart1"></div>
+	</div>
+
+	<div class="row">
+		<div id="chart2"></div>
+	</div>
+
+	<div class="row">
+		<div id="chart3"></div>
+	</div>
+
+	<script type="text/javascript">
+		// 1 - Survival rate v.s. gender and class
+		var svg1 = dimple.newSvg("#chart1", 700, 500);
+		d3.csv("Titanic-data.csv", function(Tdata){
+			var chart = new dimple.chart(svg1, Tdata);
+		    chart.addCategoryAxis("x", ["Sex", "Pclass"]);
+		    chart.addMeasureAxis("y", "Survived");
+		    chart.addSeries("Sex", dimple.plot.bar);
+			chart.addLegend(65, 15, 500, 20, "left");
+			chart.draw();
+		});
+		
+		//2 -  Survival rate v.s. gender and ticket fare
+		var svg2 = dimple.newSvg("#chart1", 700, 500);
+		d3.csv("Titanic-data.csv", function(Tdata){
+			var chart = new dimple.chart(svg2, Tdata);
+		    chart.addCategoryAxis("x", ["Sex", "Fare"]);
+		    chart.addMeasureAxis("y", "Survived");
+		    chart.addSeries("Fare", dimple.plot.bar);
+			chart.addLegend(65, 15, 500, 20, "left");
+			chart.draw();
+		});
+		// 3 - Survival rate v.s. gender and age
+
+		var svg3 = dimple.newSvg("#chart2", 3000, 600);
+		d3.csv("Titanic-data.csv", function(Tdata){
+			var chart = new dimple.chart(svg3, Tdata);
+		    chart.addCategoryAxis("x", ["Age", "Sex"]);
+		    chart.addMeasureAxis("y", "Survived");
+		    chart.addSeries("Sex", dimple.plot.bar)
+		    chart.addLegend(60, 10, 800, 20, "left");
+			chart.draw();
+		});	
+		
+		
+		// 4 - Survival rate v.s. gender and number of kids a person has
+
+		var svg4 = dimple.newSvg("#chart3", 500, 800);
+		d3.csv("Titanic-data.csv", function(data){
+			var chart = new dimple.chart(svg4, data);
+		    chart.addCategoryAxis("x", ["Parch","Sex"]);
+		    chart.addMeasureAxis("y", "Survived");
+		    chart.addSeries("Sex", dimple.plot.bar)
+			chart.draw();
+		});	
+
+	    
+	</script>
+</body>
+</html>
